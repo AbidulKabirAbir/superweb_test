@@ -1170,6 +1170,7 @@ body.light-mode .toggle-btn {
   color: #fff;
 }
 
+/* --- CHANGE: Progress Bar max-width reduced from 60% to 50% --- */
 .progress-bar {
   flex: 1 1 auto;
   height: 4px;
@@ -1177,9 +1178,11 @@ body.light-mode .toggle-btn {
   border-radius: 4px;
   cursor: pointer;
   min-width: 40px;
-  max-width: 60%;
+  max-width: 50%;  /* was 60% – now narrower */
   transition: background var(--duration-slow) ease;
 }
+/* --- END CHANGE --- */
+
 .progress-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--color-accent-cyan), var(--color-accent-pink));
@@ -1267,24 +1270,27 @@ body.light-mode .toggle-btn {
    8.  QUICK ACCESS PANEL
    ============================================================ */
 
+/* --- CHANGE: max-width 580px → 660px, max-height 95vh → 88vh --- */
 .channel-panel {
   position: absolute;
   bottom: var(--space-5);
   left: 50%;
   transform: translateX(-50%) translateY(120%);
   width: 90%;
-  max-width: 580px;
+  max-width: 660px;     /* was 580px – now wider */
   background: var(--color-bg-panel);
   backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-2xl);
   border: 1px solid var(--color-border-accent);
   transition: transform var(--duration-slow) var(--ease-spring);
   z-index: 200;
-  max-height: 95vh;
+  max-height: 88vh;     /* was 95vh – now slightly shorter */
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
+/* --- END CHANGES --- */
+
 .channel-panel.show {
   transform: translateX(-50%) translateY(0);
 }
