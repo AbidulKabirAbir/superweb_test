@@ -827,98 +827,399 @@ body.light-mode .toggle-btn {
   flex-shrink: 0;
 }
 
-.time-display {
-  font-family: monospace;
-  background: rgba(0, 0, 0, 0.35);
-  padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-sm);
-  text-align: center;
-  line-height: 1.4;
-  transition: background var(--duration-slow) ease, color var(--duration-slow) ease;
-}
+/* ============================================================
+   CLOUD TIME CARD – Interactive Time Display
+   ============================================================ */
 
-.date-display {
-  font-size: var(--font-size-xs);
-  background: rgba(0, 0, 0, 0.4);
-  padding: var(--space-1) var(--space-3) var(--space-1) var(--space-3);
-  border-radius: var(--radius-lg);
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  backdrop-filter: var(--glass-blur);
+/* --- Card Container --- */
+.card-time-cloud {
+  position: relative;
+  border-radius: 1em;
+  width: 17.5em;
+  height: 7.5em;
+  z-index: 2;
   border: 1px solid var(--color-border-accent);
-  font-weight: var(--font-weight-medium);
-  line-height: 1.4;
-  transition: background var(--duration-slow) ease, color var(--duration-slow) ease, border-color var(--duration-slow) ease;
-}
-.date-display i {
-  font-size: var(--font-size-xs);
-  color: var(--color-accent-cyan);
-}
-
-.profile-wrap {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  flex-shrink: 0;
-  position: relative;
-  z-index: var(--z-dropdown);
+  transition: 0.5s all ease-in-out;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  background: var(--color-bg-glass);
+  backdrop-filter: var(--glass-blur);
+  cursor: default;
 }
 
-.profile-wrap .settings-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.04);
-  border: none;
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-base);
-  cursor: pointer;
-  transition: all var(--duration-fast) ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.profile-wrap .settings-icon:hover {
-  background: var(--color-accent-cyan-dim);
-  color: var(--color-accent-cyan);
-  transform: rotate(60deg);
-}
-
-.profile-wrap .avatar-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-pink));
-  border: 2px solid rgba(255, 255, 255, 0.08);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-base);
-  color: #fff;
-  transition: all var(--duration-fast) ease;
-  position: relative;
-  flex-shrink: 0;
-  user-select: none;
-}
-.profile-wrap .avatar-btn:hover {
-  border-color: var(--color-accent-cyan);
-  transform: scale(1.04);
-}
-
-.profile-wrap .avatar-btn .status-dot {
+/* --- Front Layer (slides down on hover) --- */
+.card-time-cloud-front {
+  width: 20em;
+  height: 12.5em;
+  background: linear-gradient(135deg, var(--color-accent-cyan-dim), var(--color-accent-pink-dim));
+  border-radius: 1em;
   position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: var(--color-success);
-  border: 2px solid #0a0a14;
+  z-index: 2;
+  top: 95%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: 0.5s all ease-in-out;
+  opacity: 0.15;
+}
+
+/* --- Back Layer (rotating cloud) --- */
+.card-time-cloud-back {
+  width: 20em;
+  height: 12.5em;
+  background: rgba(0, 242, 254, 0.03);
+  border-radius: 1em;
+  position: absolute;
+  z-index: 1;
+  top: 57.5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: 0.5s all ease-in-out;
+}
+
+/* --- Hover effects --- */
+.card-time-cloud:hover {
+  margin-bottom: 0.5em;
+  box-shadow: 0 0.5em 2em rgba(0, 242, 254, 0.15), 0 0.5em 2em rgba(250, 75, 110, 0.1);
+  border-color: var(--color-accent-cyan);
+  height: 14em;
+  width: 17.5em;
+}
+
+.card-time-cloud:hover .card-time-cloud-front {
+  top: 105%;
+}
+
+.card-time-cloud:hover .card-time-cloud-back {
+  filter: blur(1.5em);
+}
+
+/* --- Rotating cloud SVG --- */
+.card-time-cloud-back svg {
+  position: absolute;
+  z-index: 1;
+  top: -5em;
+  left: -2.5em;
+  width: 25em;
+  height: auto;
+  opacity: 40%;
+  animation: rotate-cloud 20s linear infinite;
+  filter: blur(1.5em);
+}
+
+.card-time-cloud-back svg path {
+  fill: var(--color-accent-cyan);
+}
+
+@keyframes rotate-cloud {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* --- Rain drops --- */
+.card-time-cloud-rain {
+  width: 0.15em;
+  height: 2em;
+  background: linear-gradient(var(--color-accent-cyan), transparent);
+  z-index: 1;
+  position: absolute;
+  top: -5em;
+  transform: rotate(-20deg) translate(-2em);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card-time-cloud:hover .card-time-cloud-rain {
+  animation: rain-effect 1s linear infinite;
+  opacity: 1;
+}
+
+@keyframes rain-effect {
+  0% { top: -5em; left: 0em; opacity: 0.8; }
+  90% { top: 12.5em; left: 6em; opacity: 0; }
+  100% { top: -5em; left: 0em; opacity: 0; }
+}
+
+.card-time-cloud-rain:nth-child(2) { transform: rotate(-20deg) translate(-0.5em); }
+.card-time-cloud-rain:nth-child(3) { transform: rotate(-20deg) translate(1.5em); }
+.card-time-cloud-rain:nth-child(4) { transform: rotate(-20deg) translate(3em); }
+.card-time-cloud-rain:nth-child(5) { transform: rotate(-20deg) translate(4.5em); }
+.card-time-cloud-rain:nth-child(6) { transform: rotate(-20deg) translate(6em); }
+.card-time-cloud-rain:nth-child(7) { transform: rotate(-20deg) translate(8.5em); }
+.card-time-cloud-rain:nth-child(8) { transform: rotate(-20deg) translate(10em); }
+.card-time-cloud-rain:nth-child(9) { transform: rotate(-20deg) translate(12em); }
+.card-time-cloud-rain:nth-child(10) { transform: rotate(-20deg) translate(14em); }
+
+.card-time-cloud:hover .card-time-cloud-rain:nth-child(2),
+.card-time-cloud:hover .card-time-cloud-rain:nth-child(6) {
+  animation: rain-effect 1s linear infinite 0.25s;
+}
+.card-time-cloud:hover .card-time-cloud-rain:nth-child(3),
+.card-time-cloud:hover .card-time-cloud-rain:nth-child(7) {
+  animation: rain-effect 1s linear infinite 0.45s;
+}
+.card-time-cloud:hover .card-time-cloud-rain:nth-child(4),
+.card-time-cloud:hover .card-time-cloud-rain:nth-child(8) {
+  animation: rain-effect 1s linear infinite 0.35s;
+}
+.card-time-cloud:hover .card-time-cloud-rain:nth-child(5),
+.card-time-cloud:hover .card-time-cloud-rain:nth-child(9) {
+  animation: rain-effect 1s linear infinite 0.7s;
+}
+.card-time-cloud:hover .card-time-cloud-rain:nth-child(10) {
+  animation: rain-effect 1s linear infinite 0.15s;
+}
+
+/* --- Text elements --- */
+.card-time-cloud-day {
+  color: var(--color-text-secondary);
+  position: absolute;
+  z-index: 3;
+  top: 1.25em;
+  left: 0.5em;
+  font-size: 1.5em;
+  font-weight: bold;
+  transition: 0.5s all ease-in-out;
+  font-family: var(--font-family);
+  text-shadow: 0 0 20px rgba(0, 242, 254, 0.1);
+}
+
+.card-time-cloud-day-number {
+  color: var(--color-text-secondary);
+  position: absolute;
+  z-index: 3;
+  top: 3em;
+  left: 0.65em;
+  font-size: 1.25em;
+  transition: 0.5s all ease-in-out;
+  font-weight: 500;
+  font-family: var(--font-family);
+}
+
+.card-time-cloud-hour {
+  color: var(--color-text-primary);
+  position: absolute;
+  z-index: 3;
+  top: 1.25em;
+  right: 0.5em;
+  font-size: 1.5em;
+  font-weight: bold;
+  transition: 0.5s all ease-in-out;
+  font-family: var(--font-family);
+  text-shadow: 0 0 30px rgba(0, 242, 254, 0.2), 0 0 60px rgba(250, 75, 110, 0.1);
+}
+
+.card-time-cloud:hover .card-time-cloud-hour {
+  top: 0.5em;
+  font-size: 3em;
+  color: var(--color-accent-cyan);
+}
+
+.card-time-cloud:hover .card-time-cloud-day,
+.card-time-cloud:hover .card-time-cloud-day-number {
+  color: var(--color-text-primary);
+}
+
+/* --- Cloud icon --- */
+.card-time-cloud-icon svg {
+  position: absolute;
+  z-index: 4;
+  top: 4em;
+  right: 0.6em;
+  transform: rotate(0deg);
+  width: 1.5em;
+  height: auto;
+  transition: 0.5s all ease-in-out;
+}
+
+.card-time-cloud-icon svg path {
+  fill: var(--color-accent-cyan);
+  transition: 0.5s all ease-in-out;
+}
+
+.card-time-cloud:hover .card-time-cloud-icon svg {
+  top: 7.25em;
+  right: -1.75em;
+  width: 7.5em;
+  height: auto;
+  transform: rotate(-35deg);
+}
+
+.card-time-cloud:hover .card-time-cloud-icon svg path {
+  fill: var(--color-accent-pink);
+}
+
+.card-time-cloud:active {
+  transition: 0.25s all ease-in-out;
+  transform: scale(0.95);
+}
+
+.card-time-cloud:active .card-time-cloud-front {
+  transition: 0.25s all ease-in-out;
+  top: 120%;
+  background: var(--color-accent-pink-dim);
+}
+
+.card-time-cloud:active .card-time-cloud-icon svg {
+  transition: 0.25s all ease-in-out;
+  top: 8em;
+  transform: rotate(-25deg);
+}
+
+.card-time-cloud:active .card-time-cloud-icon svg path {
+  fill: var(--color-accent-pink);
+}
+
+/* --- Light mode overrides --- */
+body.light-mode .card-time-cloud {
+  background: var(--color-bg-glass-light);
+  border-color: var(--color-border-light-light);
+}
+
+body.light-mode .card-time-cloud:hover {
+  border-color: var(--color-accent-cyan);
+  box-shadow: 0 0.5em 2em rgba(0, 242, 254, 0.15);
+}
+
+body.light-mode .card-time-cloud-front {
+  background: linear-gradient(135deg, rgba(0, 242, 254, 0.08), rgba(250, 75, 110, 0.05));
+}
+
+body.light-mode .card-time-cloud-back {
+  background: rgba(0, 242, 254, 0.02);
+}
+
+body.light-mode .card-time-cloud-day,
+body.light-mode .card-time-cloud-day-number {
+  color: var(--color-text-secondary-light);
+}
+
+body.light-mode .card-time-cloud-hour {
+  color: var(--color-text-primary-light);
+}
+
+body.light-mode .card-time-cloud:hover .card-time-cloud-day,
+body.light-mode .card-time-cloud:hover .card-time-cloud-day-number {
+  color: var(--color-text-primary-light);
+}
+
+body.light-mode .card-time-cloud:hover .card-time-cloud-hour {
+  color: var(--color-accent-cyan);
+}
+
+body.light-mode .card-time-cloud-rain {
+  background: linear-gradient(var(--color-accent-cyan), transparent);
+}
+
+/* --- Responsive adjustments --- */
+@media (max-width: 860px) {
+  .card-time-cloud {
+    width: 14em;
+    height: 6.5em;
+  }
+  .card-time-cloud-day {
+    font-size: 1.2em;
+    top: 1em;
+    left: 0.4em;
+  }
+  .card-time-cloud-day-number {
+    font-size: 1em;
+    top: 2.5em;
+    left: 0.5em;
+  }
+  .card-time-cloud-hour {
+    font-size: 1.2em;
+    top: 1em;
+    right: 0.4em;
+  }
+  .card-time-cloud:hover {
+    height: 12em;
+    width: 14em;
+  }
+  .card-time-cloud:hover .card-time-cloud-hour {
+    font-size: 2.2em;
+    top: 0.3em;
+  }
+  .card-time-cloud:hover .card-time-cloud-icon svg {
+    width: 5.5em;
+    right: -1.25em;
+    top: 6.5em;
+  }
+  .card-time-cloud-back svg {
+    width: 20em;
+    top: -3em;
+    left: -2em;
+  }
+  .card-time-cloud-icon svg {
+    width: 1.2em;
+    top: 3.5em;
+    right: 0.4em;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-time-cloud {
+    width: 11em;
+    height: 5.5em;
+  }
+  .card-time-cloud-day {
+    font-size: 0.9em;
+    top: 0.8em;
+    left: 0.3em;
+  }
+  .card-time-cloud-day-number {
+    font-size: 0.8em;
+    top: 2.2em;
+    left: 0.4em;
+  }
+  .card-time-cloud-hour {
+    font-size: 0.9em;
+    top: 0.8em;
+    right: 0.3em;
+  }
+  .card-time-cloud:hover {
+    height: 10em;
+    width: 11em;
+  }
+  .card-time-cloud:hover .card-time-cloud-hour {
+    font-size: 1.8em;
+    top: 0.2em;
+  }
+  .card-time-cloud:hover .card-time-cloud-icon svg {
+    width: 4.5em;
+    right: -1em;
+    top: 5.5em;
+  }
+  .card-time-cloud-back svg {
+    width: 16em;
+    top: -2em;
+    left: -1.5em;
+  }
+  .card-time-cloud-icon svg {
+    width: 1em;
+    top: 3em;
+    right: 0.3em;
+  }
+}
+
+/* --- Reduced motion --- */
+@media (prefers-reduced-motion: reduce) {
+  .card-time-cloud-back svg {
+    animation: none !important;
+  }
+  .card-time-cloud:hover .card-time-cloud-rain {
+    animation: none !important;
+  }
+  .card-time-cloud {
+    transition: none !important;
+  }
+  .card-time-cloud-front,
+  .card-time-cloud-back,
+  .card-time-cloud-day,
+  .card-time-cloud-day-number,
+  .card-time-cloud-hour,
+  .card-time-cloud-icon svg {
+    transition: none !important;
+  }
 }
 
 /* ============================================================
