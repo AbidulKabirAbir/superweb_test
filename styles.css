@@ -1170,7 +1170,7 @@ body.light-mode .toggle-btn {
   color: #fff;
 }
 
-/* --- CHANGE: Progress Bar max-width reduced from 60% to 50% --- */
+/* --- Progress Bar: max-width 55% (slightly wider) --- */
 .progress-bar {
   flex: 1 1 auto;
   height: 4px;
@@ -1178,10 +1178,10 @@ body.light-mode .toggle-btn {
   border-radius: 4px;
   cursor: pointer;
   min-width: 40px;
-  max-width: 50%;  /* was 60% – now narrower */
+  max-width: 55%;
   transition: background var(--duration-slow) ease;
 }
-/* --- END CHANGE --- */
+/* --- END --- */
 
 .progress-fill {
   height: 100%;
@@ -1270,26 +1270,26 @@ body.light-mode .toggle-btn {
    8.  QUICK ACCESS PANEL
    ============================================================ */
 
-/* --- CHANGE: max-width 580px → 660px, max-height 95vh → 88vh --- */
+/* --- Panel: max-width 740px, max-height 85vh --- */
 .channel-panel {
   position: absolute;
   bottom: var(--space-5);
   left: 50%;
   transform: translateX(-50%) translateY(120%);
   width: 90%;
-  max-width: 660px;     /* was 580px – now wider */
+  max-width: 740px;
   background: var(--color-bg-panel);
   backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-2xl);
   border: 1px solid var(--color-border-accent);
   transition: transform var(--duration-slow) var(--ease-spring);
   z-index: 200;
-  max-height: 88vh;     /* was 95vh – now slightly shorter */
+  max-height: 85vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
-/* --- END CHANGES --- */
+/* --- END --- */
 
 .channel-panel.show {
   transform: translateX(-50%) translateY(0);
@@ -1356,20 +1356,23 @@ body.light-mode .toggle-btn {
   transform: scale(1.1);
 }
 
+/* --- Source Toggle: no scroll, all buttons visible, tighter gap --- */
 .source-toggle {
   display: flex;
-  gap: var(--space-2);
+  gap: 4px;
   padding: var(--space-3) var(--space-4);
   flex-wrap: wrap;
   background: rgba(0, 0, 0, 0.4);
   border-bottom: var(--glass-border);
-  max-height: 140px;
-  overflow-y: auto;
+  max-height: auto;
+  overflow-y: visible;
   justify-content: center;
 }
+/* --- END --- */
 
+/* --- Source Buttons: smaller padding to fit all --- */
 .source-btn {
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-1) var(--space-2);
   background: rgba(255, 255, 255, 0.05);
   border-radius: var(--radius-full);
   font-weight: var(--font-weight-semibold);
@@ -1384,6 +1387,7 @@ body.light-mode .toggle-btn {
   background: linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-pink));
   color: #fff;
 }
+/* --- END --- */
 
 .search-bar {
   padding: var(--space-3) var(--space-5);
@@ -1789,6 +1793,7 @@ body.light-mode .toggle-btn {
   object-fit: cover;
 }
 
+/* --- Poster Actions: tighter gap and smaller buttons --- */
 .poster-actions {
   position: absolute;
   top: 0;
@@ -1799,7 +1804,7 @@ body.light-mode .toggle-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-3);
+  gap: 8px;
   opacity: 0;
   transition: opacity var(--duration-fast) ease;
   border-radius: var(--radius-lg);
@@ -1809,8 +1814,8 @@ body.light-mode .toggle-btn {
 }
 
 .action-btn {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   display: flex;
@@ -1827,6 +1832,7 @@ body.light-mode .toggle-btn {
   color: #000;
   transform: scale(1.1);
 }
+/* --- END --- */
 
 .fav-btn-top {
   position: absolute;
